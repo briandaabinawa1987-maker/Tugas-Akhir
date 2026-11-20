@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Product - LOVE PLEASURE</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="tugasakhir.css">
+
+<style>
+.popup-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,.38);
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  font-family: "DM Sans", sans-serif;
+}
+.popup-box {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 8px 30px #0003;
+}
+.popup-box h2 { font-size: 23px; margin: 0 35px 22px 0; }
+.tutup {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  border: 0;
+  background: none;
+  font-size: 27px;
+  cursor: pointer;
+}
+.produk-pilihan {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f2f2f2;
+  border-radius: 12px;
+  padding: 12px;
+}
+.produk-pilihan img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  background: white;
+}
+.produk-pilihan h3 { font-size: 15px; margin: 0 0 8px; }
+.produk-pilihan p { margin: 0; font-weight: bold; }
+.jumlah {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 18px 0;
+}
+.jumlah button, .kontrol-item button {
+  border: 1px solid #ddd;
+  background: white;
+  padding: 8px 13px;
+  cursor: pointer;
+  font-size: 18px;
+}
+.jumlah span { padding: 8px 22px; }
+.tambah {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #171717;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+.cart-icon { position: relative; }
+#jumlahKeranjang {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: #171717;
+  color: white;
+  font-size: 10px;
+  border-radius: 50%;
+  min-width: 17px;
+  height: 17px;
+  display: grid;
+  place-items: center;
+}
+#panelKeranjang {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  right: 0;
+  top: 0;
+  width: 100%;
+  max-width: 470px;
+  height: 100dvh;
+  background: white;
+  box-shadow: -5px 0 25px #0002;
+  flex-direction: column;
+  font-family: "DM Sans", sans-serif;
+}
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid #eee;
+}
+.cart-header h2 { margin: 0; font-size: 23px; }
+.cart-header button {
+  border: 0;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+#daftarKeranjang {
+  overflow-y: auto;
+  flex: 1;
+  padding: 10px 18px;
+}
+.item-keranjang {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+.item-keranjang img {
+  width: 90px;
+  height: 100px;
+  object-fit: contain;
+}
+.item-keranjang p { margin: 5px 0 10px; }
+.kontrol-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.kontrol-item button { padding: 4px 10px; border-radius: 6px; }
+.hapus-item {
+  border: 0;
+  background: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.cart-footer {
+  padding: 18px;
+  border-top: 1px solid #eee;
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+#daftarKeranjang:empty::after {
+  content: "Keranjang kamu masih kosong.";
+  display: block;
+  padding: 25px 0;
+}
+@media(max-width:600px) {
+  #panelKeranjang { max-width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header header-produk">
+  <a class="icon menu-button" href="#menu" aria-label="Menu">
+    <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </a>
+
+  <a class="logo" href="tugasakhir.html">
+    <img src="https://d2kchovjbwl1tk.cloudfront.net/vendors/11101/assets/image/1738892914896-Tak_berjudul15_20250206004526_resized512-png.webp" alt="Logo LVP">
+  </a>
+
+  <div class="tools">
+  <span class="cur">
+    <span class="flag"></span>
+    IDR
+  </span>
+
+  <a class="icon cart-icon" href="#keranjang"
+     onclick="bukaKeranjang(); return false;" aria-label="Keranjang">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 8h14v13H5z"/>
+      <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+    </svg>
+    <span id="jumlahKeranjang">0</span>
+  </a>
+
+  
+
+  <label class="search">
+    <svg viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m16 16 5 5"/>
+    </svg>
+    <input type="search" id="cari" placeholder="Cari produk">
+  </label>
+</div>
+</header>
+
+
+<nav class="menu" id="menu" aria-label="Menu utama">
+
+    <div class="menu-top">
+        <a class="icon menu-close" href="#" aria-label="Tutup menu">
+            <svg viewBox="0 0 24 24">
+                <path d="M5 5l14 14M19 5L5 19"/>
+            </svg>
+        </a>
+    </div>
+
+    <a href="tugasakhir.html">HOME</a>
+    <a href="produk.html">ALL PRODUCT</a>
+
+    <details>
+        <summary>
+            CATALOG
+            <svg class="chev" viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </summary>
+
+        <div class="sub">
+            <a href="produk.html">Topi &amp; Kupluk</a>
+            <a href="produk.html">Atasan</a>
+            <a href="produk.html">Bawahan</a>
+            <a href="produk.html">Aksesoris</a>
+        </div>
+    </details>
+
+    <a class="sale" href="produk.html">SALE</a>
+
+</nav>
+
+<a class="dim" href="#" aria-label="Tutup menu"></a>
+
+
+<main class="products-page" id="produk">
+  <h1>Semua Produk</h1>
+
+  <div class="filters">
+    <select id="kategori">
+      <option value="semua">Kategori: semua</option>
+      <option value="topi">Topi & Kupluk</option>
+      <option value="aksesoris">Aksesoris</option>
+      <option value="bawahan">Bawahan</option>
+      <option value="atasan">Atasan</option>
+    </select>
+
+    <select id="warna">
+      <option value="semua">Warna: semua</option>
+      <option value="hitam">Hitam</option>
+      <option value="hijau">Hijau</option>
+      <option value="putih">Putih</option>
+      <option value="abu">Abu-abu</option>
+    </select>
+
+    <select id="harga">
+      <option value="semua">Harga: semua</option>
+      <option value="murah">Di bawah Rp200.000</option>
+      <option value="sedang">Rp200.000–Rp400.000</option>
+      <option value="mahal">Di atas Rp400.000</option>
+    </select>
+
+    <select id="urutan">
+      <option value="unggulan">Urutan: unggulan</option>
+      <option value="termurah">Harga terendah</option>
+      <option value="termahal">Harga tertinggi</option>
+      <option value="nama">Nama produk</option>
+    </select>
+  </div>
+
+  <div class="grid" id="daftarProduk">
+
+    <article class="card" data-kategori="topi" data-warna="hitam" data-harga="159000" data-nama="LVP Beanie Recon">
+      <span class="badge">24%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6756_1792080223066_resized512-PNG.webp" alt="Beanie Recon"></div>
+      <h3>LVP - Beanie - Recon</h3>
+      <p class="old">Rp 210.000</p><p class="now">Rp 159.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="topi" data-warna="hijau" data-harga="159000" data-nama="LVP Fitted Cap Field Cap">
+      <span class="badge">24%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6901_1792080220509_resized512-PNG.webp" alt="Fitted Cap"></div>
+      <h3>LVP - Fitted Cap - Field Cap</h3>
+      <p class="old">Rp 210.000</p><p class="now">Rp 159.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="aksesoris" data-warna="hitam" data-harga="159000" data-nama="LVP Belt Woodland">
+      <span class="badge">24%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6753_1792080217607_resized1024-PNG.webp" alt="Belt Woodland"></div>
+      <h3>LVP - Belt - Woodland</h3>
+      <p class="old">Rp 210.000</p><p class="now">Rp 159.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="bawahan" data-warna="hijau" data-harga="299000" data-nama="LVP Jorts Pants Tactical">
+      <span class="badge">15%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6754_1792080213804_resized512-PNG.webp" alt="Jorts Pants"></div>
+      <h3>LVP - Jorts Pants - Tactical</h3>
+      <p class="old">Rp 355.000</p><p class="now">Rp 299.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="atasan" data-warna="hijau" data-harga="229000" data-nama="LVP Boxy Oversize Tshirt">
+      <span class="badge">21%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6750_1792080211308_resized1024-PNG.webp" alt="Boxy Oversize Tshirt"></div>
+      <h3>LVP - Boxy Oversize Tshirt - Field Ops</h3>
+      <p class="old">Rp 289.000</p><p class="now">Rp 229.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="bawahan" data-warna="abu" data-harga="415000" data-nama="LVP Baggy Jeans">
+      <span class="badge">17%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6898_1792080208610_resized1024-PNG.webp" alt="Baggy Jeans"></div>
+      <h3>LVP - Baggy Jeans - Barracks Denim</h3>
+      <p class="old">Rp 499.000</p><p class="now">Rp 415.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="atasan" data-warna="putih" data-harga="151000" data-nama="Singlet Rib Putih">
+      <span class="badge">24%</span>
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6902_1792080205888_resized512-PNG.webp" alt="Singlet Rib Putih"></div>
+      <h3>Singlet Rib Putih</h3>
+      <p class="old">Rp 199.000</p><p class="now">Rp 151.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+    <article class="card" data-kategori="atasan" data-warna="hijau" data-harga="459000" data-nama="LVP Tanktop Infantry Tank">
+      <div class="photo"><img src="https://d2kchovjbwl1tk.cloudfront.net/vendor/11101/product/IMG_6907_1792080203052_resized1024-PNG.webp" alt="Tanktop Infantry"></div>
+      <h3>LVP - Tanktop - Infantry Tank</h3>
+      <p class="now">Rp 459.000</p>
+      <button class="buy" onclick="beli(this)">Beli</button>
+    </article>
+
+  </div>
+
+  <p id="kosong" hidden>Produk tidak ditemukan.</p>
+</main>
+
+<footer class="footer">© 2025 LOVE PLEASURE</footer>
+
+<div id="popupKeranjang" class="popup-bg">
+  <div class="popup-box">
+    <button class="tutup" onclick="tutupKeranjang()">×</button>
+    <h2>Tambah Ke Keranjang</h2>
+    <div class="produk-pilihan">
+      <img id="gambarPilihan" src="" alt="Produk">
+      <div>
+        <h3 id="namaPilihan"></h3>
+        <p id="hargaPilihan"></p>
+      </div>
+    </div>
+    <div class="jumlah">
+      <button onclick="ubahJumlah(-1)">−</button>
+      <span id="jumlahProduk">1</span>
+      <button onclick="ubahJumlah(1)">+</button>
+    </div>
+    <button class="tambah" onclick="tambahKeranjang()">Tambah Ke Keranjang</button>
+  </div>
+</div>
+
+<div id="panelKeranjang">
+  <div class="cart-header">
+    <h2>Keranjang Saya</h2>
+    <button onclick="tutupPanelKeranjang()">×</button>
+  </div>
+  <div id="daftarKeranjang"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span id="jumlahItem">Total Harga (0)</span>
+      <strong id="totalKeranjang">Rp 0</strong>
+    </div>
+    <button class="tambah" onclick="checkoutKeranjang()">Checkout dengan Diskon</button>
+  </div>
+</div>
+
+<script>
+const kartu = [...document.querySelectorAll('#daftarProduk .card')];
+let jumlah = 1;
+let produkDipilih = null;
+let isiKeranjang = [];
+
+const rupiah = angka => 'Rp ' + angka.toLocaleString('id-ID');
+
+function terapkanFilter() {
+  const kategori = document.getElementById('kategori').value;
+  const warna = document.getElementById('warna').value;
+  const harga = document.getElementById('harga').value;
+  const urutan = document.getElementById('urutan').value;
+  const cari = document.getElementById('cari').value.toLowerCase();
+
+  let hasil = kartu.filter(k => {
+    const nominal = Number(k.dataset.harga);
+    return (kategori === 'semua' || k.dataset.kategori === kategori) &&
+      (warna === 'semua' || k.dataset.warna === warna) &&
+      (harga === 'semua' ||
+        (harga === 'murah' && nominal < 200000) ||
+        (harga === 'sedang' && nominal >= 200000 && nominal <= 400000) ||
+        (harga === 'mahal' && nominal > 400000)) &&
+      k.textContent.toLowerCase().includes(cari);
+  });
+
+  if (urutan === 'termurah') hasil.sort((a,b) => +a.dataset.harga - +b.dataset.harga);
+  if (urutan === 'termahal') hasil.sort((a,b) => +b.dataset.harga - +a.dataset.harga);
+  if (urutan === 'nama') hasil.sort((a,b) => a.dataset.nama.localeCompare(b.dataset.nama));
+
+  const grid = document.getElementById('daftarProduk');
+  hasil.forEach(k => grid.appendChild(k));
+  kartu.filter(k => !hasil.includes(k)).forEach(k => grid.appendChild(k));
+  document.getElementById('kosong').hidden = hasil.length > 0;
+}
+
+['kategori','warna','harga','urutan'].forEach(id => {
+  document.getElementById(id).addEventListener('change', terapkanFilter);
+});
+document.getElementById('cari').addEventListener('input', terapkanFilter);
+
+function beli(tombol) {
+  produkDipilih = tombol.closest('.card');
+  jumlah = 1;
+
+  document.getElementById('namaPilihan').textContent =
+    produkDipilih.querySelector('h3').textContent;
+  document.getElementById('gambarPilihan').src =
+    produkDipilih.querySelector('img').src;
+  document.getElementById('hargaPilihan').textContent =
+    rupiah(Number(produkDipilih.dataset.harga));
+  document.getElementById('jumlahProduk').textContent = jumlah;
+  document.getElementById('popupKeranjang').style.display = 'flex';
+}
+
+function ubahJumlah(perubahan) {
+  jumlah = Math.max(1, jumlah + perubahan);
+  document.getElementById('jumlahProduk').textContent = jumlah;
+}
+
+function tutupKeranjang() {
+  document.getElementById('popupKeranjang').style.display = 'none';
+}
+
+function tambahKeranjang() {
+  if (!produkDipilih) return;
+
+  const nama = produkDipilih.querySelector('h3').textContent;
+  const itemLama = isiKeranjang.find(item => item.nama === nama);
+
+  if (itemLama) {
+    itemLama.jumlah += jumlah;
+  } else {
+    isiKeranjang.push({
+      nama: nama,
+      harga: Number(produkDipilih.dataset.harga),
+      gambar: produkDipilih.querySelector('img').src,
+      jumlah: jumlah
+    });
+  }
+
+  perbaruiJumlahKeranjang();
+  tutupKeranjang();
+}
+
+function bukaKeranjang() {
+  const panel = document.getElementById('panelKeranjang');
+  const daftar = document.getElementById('daftarKeranjang');
+  daftar.innerHTML = '';
+
+  let total = 0;
+  let banyak = 0;
+
+  isiKeranjang.forEach((item, index) => {
+    total += item.harga * item.jumlah;
+    banyak += item.jumlah;
+
+    const baris = document.createElement('div');
+    baris.className = 'item-keranjang';
+
+    const gambar = document.createElement('img');
+    gambar.src = item.gambar;
+    gambar.alt = item.nama;
+
+    const info = document.createElement('div');
+    const nama = document.createElement('p');
+    nama.textContent = item.nama;
+
+    const harga = document.createElement('strong');
+    harga.textContent = rupiah(item.harga);
+
+    const kontrol = document.createElement('div');
+    kontrol.className = 'kontrol-item';
+
+    const hapus = document.createElement('button');
+    hapus.className = 'hapus-item';
+    hapus.textContent = 'Hapus';
+    hapus.onclick = () => {
+      isiKeranjang.splice(index, 1);
+      perbaruiJumlahKeranjang();
+      bukaKeranjang();
+    };
+
+    const kurang = document.createElement('button');
+    kurang.textContent = '−';
+    kurang.onclick = () => {
+      item.jumlah--;
+      if (item.jumlah <= 0) isiKeranjang.splice(index, 1);
+      perbaruiJumlahKeranjang();
+      bukaKeranjang();
+    };
+
+    const angka = document.createElement('span');
+    angka.textContent = item.jumlah;
+
+    const tambah = document.createElement('button');
+    tambah.textContent = '+';
+    tambah.onclick = () => {
+      item.jumlah++;
+      perbaruiJumlahKeranjang();
+      bukaKeranjang();
+    };
+
+    kontrol.append(kurang, angka, tambah, hapus);
+    info.append(nama, harga, kontrol);
+    baris.append(gambar, info);
+    daftar.appendChild(baris);
+  });
+
+  document.getElementById('jumlahItem').textContent = 'Total Harga (' + banyak + ')';
+  document.getElementById('totalKeranjang').textContent = rupiah(total);
+  panel.style.display = 'flex';
+}
+
+function tutupPanelKeranjang() {
+  document.getElementById('panelKeranjang').style.display = 'none';
+}
+
+function perbaruiJumlahKeranjang() {
+  const banyak = isiKeranjang.reduce((total, item) => total + item.jumlah, 0);
+  document.getElementById('jumlahKeranjang').textContent = banyak;
+}
+
+function checkoutKeranjang() {
+  if (isiKeranjang.length === 0) {
+    alert('Keranjang kamu masih kosong!');
+    return;
+  }
+  alert('Keranjang siap diproses. Pembayaran belum terhubung.');
+}
+
+document.getElementById('popupKeranjang').addEventListener('click', function(e) {
+  if (e.target === this) tutupKeranjang();
+});
+</script>
+
+</body>
+</html
